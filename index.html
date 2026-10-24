@@ -14,7 +14,13 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Indie+Flower&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"
+  defer>
+</script>
+
+<script src="script.js" defer></script>
 </head>
 
 <body>
@@ -68,38 +74,16 @@
         <p>Every page has a story. Every photo has a little secret.</p>
       </div>
 
-      <div class="book-stage">
+     
+<div class="book-stage">
 
-        <!-- REALISTIC PAGE-FLIP SCRAPBOOK -->
-<div class="flipbook-frame">
-  <div id="flipBook" class="scrapbook-flip"></div>
+  <!-- REALISTIC PAGE-FLIP SCRAPBOOK -->
+  <div class="flipbook-frame">
+    <div id="flipBook" class="scrapbook-flip"></div>
   </div>
-</div>        
-        
-        <div class="book-shell" id="bookShell">
 
-          <div class="book-spine" aria-hidden="true"></div>
+</div>
 
-          <!-- LEFT PAGE -->
-          <div class="book-page left-page" id="leftPage">
-            <div class="page-inner" id="leftContent"></div>
-            <span class="page-number" id="leftNumber"></span>
-          </div>
-
-          <!-- RIGHT PAGE -->
-          <div class="book-page right-page" id="rightPage">
-            <div class="page-inner" id="rightContent"></div>
-            <span class="page-number" id="rightNumber"></span>
-          </div>
-
-          <!-- PAGE TURN ANIMATION -->
-          <div class="turn-sheet" id="turnSheet" aria-hidden="true">
-            <div class="turn-front"></div>
-            <div class="turn-back"></div>
-          </div>
-
-        </div>
-      </div>
 
       <!-- CONTROLS -->
       <div class="book-controls">
