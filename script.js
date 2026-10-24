@@ -566,7 +566,7 @@ bookStage.addEventListener("wheel", (event) => {
 
   const now = Date.now();
 
-  if (isTurning || now - lastWheelTurn < 950) {
+  if (isTurning || now - lastWheelTurn < 1500) {
     return;
   }
 
