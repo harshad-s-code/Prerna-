@@ -1210,3 +1210,64 @@ em {
 .turn-back {
   -webkit-transform-style: preserve-3d;
 }
+
+/* ===== PAGE TURN VISIBILITY FIX ===== */
+
+.book-shell {
+  position: relative;
+  perspective: 2200px;
+  transform-style: preserve-3d;
+}
+
+.book-page {
+  position: relative;
+  z-index: 1;
+}
+
+.book-spine {
+  z-index: 5;
+  pointer-events: none;
+}
+
+.turn-sheet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+}
+
+.turn-sheet.reverse {
+  left: 0;
+  transform-origin: right center;
+}
+
+.turn-sheet.flipping {
+  opacity: 1;
+  visibility: visible;
+  animation: realisticForward 1.3s
+    cubic-bezier(.45, .03, .22, 1) forwards;
+}
+
+.turn-sheet.flipping.reverse {
+  animation-name: realisticBackward;
+}
+
+.turn-front,
+.turn-back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.turn-back {
+  transform: rotateY(180deg);
+}
