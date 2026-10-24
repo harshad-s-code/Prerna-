@@ -444,7 +444,7 @@ function turnPage(direction) {
   prevButton.disabled = true;
   nextButton.disabled = true;
 
-  const duration = 1300;
+  const duration = 1650;
 
   if (isMobile() || reducedMotion.matches) {
     currentIndex = nextIndex;
@@ -534,7 +534,7 @@ bookStage.addEventListener("wheel", (event) => {
 
   const now = Date.now();
 
-  if (isTurning || now - lastWheelTurn < 1450) {
+  if (isTurning || now - lastWheelTurn < 1800) {
     return;
   }
 
