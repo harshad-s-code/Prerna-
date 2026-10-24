@@ -100,19 +100,19 @@ const memories = [
   },
  
 {
-  image: "/image14.jpg",
+  image: "/image4.jpg",
   caption: "Smiles and stories",
   title: "Never stop dreaming.",
   message: "Whatever dreams you carry..."
 },
 {
-  image: "/image15.jpg",
+  image: "/image9.jpg",
   caption: "One for the album",
   title: "You are appreciated.",
   message: "Sometimes we forget..."
 },
 {
-  image: "/image16.jpg",
+  image: "/image1.jpg",
   caption: "To be continued...",
   title: "Here's to more memories.",
   message: "Thank you for being part..."
