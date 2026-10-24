@@ -1399,3 +1399,163 @@ em {
     display: none;
   }
 }
+
+/* =========================================
+   REALISTIC PAPER CURL & SOFT WAVE EFFECT
+   Add AFTER existing page-turn CSS
+========================================= */
+
+/* More natural movement of the turning sheet */
+.turn-sheet.flipping {
+  animation: naturalPageForward 1.65s
+    cubic-bezier(.42, 0, .18, 1) forwards;
+}
+
+.turn-sheet.flipping.reverse {
+  animation: naturalPageBackward 1.65s
+    cubic-bezier(.42, 0, .18, 1) forwards;
+}
+
+/* Paper texture and gentle curved lighting */
+.turn-front,
+.turn-back {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(120, 88, 48, .025) 2px,
+      transparent 5px
+    ),
+    linear-gradient(
+      100deg,
+      #ead5b0 0%,
+      #fff4d9 24%,
+      #f4e3c4 55%,
+      #e5cca5 100%
+    );
+
+  box-shadow:
+    inset 8px 0 22px rgba(70, 43, 25, .12),
+    4px 10px 24px rgba(40, 23, 13, .18);
+}
+
+/* Animated wave of light crossing the paper */
+.turn-front::after,
+.turn-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+
+  background: linear-gradient(
+    95deg,
+    rgba(55, 33, 19, .3) 0%,
+    rgba(255, 247, 222, .08) 17%,
+    rgba(255, 255, 255, .48) 38%,
+    rgba(112, 75, 42, .18) 57%,
+    rgba(255, 255, 255, .15) 74%,
+    rgba(55, 33, 19, .25) 100%
+  );
+
+  background-size: 220% 100%;
+  background-position: 100% 50%;
+  opacity: .55;
+}
+
+/* Moving highlights during a turn */
+.turn-sheet.flipping .turn-front::after,
+.turn-sheet.flipping .turn-back::after {
+  animation: paperLightWave 1.65s
+    ease-in-out both;
+}
+
+@keyframes paperLightWave {
+  0% {
+    background-position: 100% 50%;
+    opacity: .25;
+  }
+
+  30% {
+    opacity: .7;
+  }
+
+  55% {
+    background-position: 35% 50%;
+    opacity: .95;
+  }
+
+  80% {
+    opacity: .6;
+  }
+
+  100% {
+    background-position: 0% 50%;
+    opacity: .2;
+  }
+}
+
+/* Soft shadow underneath the turning sheet */
+.turn-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  background: rgba(42, 25, 15, .2);
+  filter: blur(22px);
+  opacity: 0;
+  transform: translate(12px, 12px);
+}
+
+.turn-sheet.flipping::before {
+  animation: paperShadowWave 1.65s
+    ease-in-out both;
+}
+
+@keyframes paperShadowWave {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(0, 0) scaleX(.95);
+  }
+
+  45% {
+    opacity: .75;
+    transform: translate(-15px, 18px) scaleX(.85);
+  }
+
+  65% {
+    opacity: .5;
+    transform: translate(-25px, 12px) scaleX(.8);
+  }
+}
+
+/* Preserve scrapbook photos while paper moves */
+.turn-sheet .page-inner {
+  transform: translateZ(1px);
+}
+
+.turn-sheet .book-polaroid {
+  animation: none !important;
+  transition: none !important;
+  pointer-events: none;
+}
+
+/* Keep mobile layout unchanged */
+@media (max-width: 700px) {
+  .turn-sheet {
+    display: none;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .turn-sheet.flipping,
+  .turn-sheet.flipping.reverse,
+  .turn-sheet.flipping::before,
+  .turn-sheet.flipping .turn-front::after,
+  .turn-sheet.flipping .turn-back::after {
+    animation: none !important;
+  }
+}
