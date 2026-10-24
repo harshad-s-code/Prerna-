@@ -1170,3 +1170,43 @@ em {
 .turn-back {
   -webkit-transform-style: preserve-3d;
 }
+
+/* ===== PHOTOGRAPHS ON TURNING PAGES ===== */
+
+.turn-front > .page-inner,
+.turn-back > .page-inner {
+  width: 100%;
+  height: 100%;
+  padding: clamp(18px, 3vw, 38px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.turn-sheet .book-polaroid {
+  animation: none !important;
+  pointer-events: none;
+}
+
+.turn-sheet button {
+  pointer-events: none;
+}
+
+.turn-front {
+  box-shadow:
+    inset -14px 0 24px rgba(71, 44, 26, .12),
+    6px 6px 25px rgba(35, 20, 12, .15);
+}
+
+.turn-back {
+  box-shadow:
+    inset 14px 0 24px rgba(71, 44, 26, .15);
+}
+
+.turn-sheet,
+.turn-front,
+.turn-back {
+  -webkit-transform-style: preserve-3d;
+}
