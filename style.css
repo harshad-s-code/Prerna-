@@ -1271,3 +1271,131 @@ em {
 .turn-back {
   transform: rotateY(180deg);
 }
+
+/* =====================================
+   DEAR PRERNA — CLEAN 3D PAGE TURN
+===================================== */
+
+.book-shell {
+  position: relative;
+  perspective: 2200px;
+  transform-style: preserve-3d;
+}
+
+.book-page {
+  z-index: 1;
+}
+
+.book-spine {
+  z-index: 5;
+  pointer-events: none;
+}
+
+.turn-sheet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+}
+
+.turn-sheet.reverse {
+  left: 0;
+  transform-origin: right center;
+}
+
+.turn-front,
+.turn-back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: #f3e3c4;
+  border: 1px solid #d4b994;
+}
+
+.turn-back {
+  transform: rotateY(180deg);
+}
+
+.turn-front::after,
+.turn-back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(66, 41, 24, .2),
+    transparent 20%,
+    rgba(255, 255, 255, .2) 55%,
+    rgba(66, 41, 24, .15)
+  );
+}
+
+.turn-sheet.flipping {
+  opacity: 1;
+  visibility: visible;
+  animation: naturalPageForward 1.3s
+    cubic-bezier(.45, .03, .22, 1) forwards;
+}
+
+.turn-sheet.flipping.reverse {
+  animation-name: naturalPageBackward;
+}
+
+@keyframes naturalPageForward {
+  0%   { transform: rotateY(0deg); }
+  15%  { transform: rotateY(-12deg); }
+  35%  { transform: rotateY(-48deg); }
+  55%  { transform: rotateY(-102deg); }
+  75%  { transform: rotateY(-150deg); }
+  90%  { transform: rotateY(-176deg); }
+  100% { transform: rotateY(-180deg); }
+}
+
+@keyframes naturalPageBackward {
+  0%   { transform: rotateY(0deg); }
+  15%  { transform: rotateY(12deg); }
+  35%  { transform: rotateY(48deg); }
+  55%  { transform: rotateY(102deg); }
+  75%  { transform: rotateY(150deg); }
+  90%  { transform: rotateY(176deg); }
+  100% { transform: rotateY(180deg); }
+}
+
+.turn-front > .page-inner,
+.turn-back > .page-inner {
+  width: 100%;
+  height: 100%;
+  padding: clamp(18px, 3vw, 38px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.turn-sheet .book-polaroid {
+  animation: none !important;
+  pointer-events: none;
+}
+
+.turn-sheet button {
+  pointer-events: none;
+}
+
+/* Keep single-page mobile layout intact */
+@media (max-width: 700px) {
+  .turn-sheet {
+    display: none;
+  }
+}
