@@ -98,27 +98,25 @@ const memories = [
     message:
       "I'm grateful that life gave us the chance to become friends. Thank you for the conversations, the laughter, and the memories we've shared."
   },
-  {
-    image: "/image14.jpg",
-    caption: "Smiles and stories",
-    title: "Never stop dreaming.",
-    message:
-      "Whatever dreams you carry in your heart, I hope you find the confidence and opportunities to make them real. Keep moving forward at your own pace."
-  },
-  {
-    image: "/image15.jpg",
-    caption: "One for the album",
-    title: "You are appreciated.",
-    message:
-      "Sometimes we forget how much our presence means to others. So here's your reminder: you're appreciated, your efforts matter, and your friendship is valued."
-  },
-  {
-    image: "/image16.jpg",
-    caption: "To be continued...",
-    title: "Here's to more memories.",
-    message:
-      "Thank you for being part of so many good moments. I hope the coming years bring you happiness, success, wonderful experiences, and countless reasons to smile."
-  }
+ 
+{
+  image: "/image14.jpg",
+  caption: "Smiles and stories",
+  title: "Never stop dreaming.",
+  message: "Whatever dreams you carry..."
+},
+{
+  image: "/image15.jpg",
+  caption: "One for the album",
+  title: "You are appreciated.",
+  message: "Sometimes we forget..."
+},
+{
+  image: "/image16.jpg",
+  caption: "To be continued...",
+  title: "Here's to more memories.",
+  message: "Thank you for being part..."
+}
 ];
 
 // 2. BUILD INDIVIDUAL BOOK PAGES
