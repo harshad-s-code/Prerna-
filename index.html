@@ -2,237 +2,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#f5e9da" />
-  <meta name="description" content="A little scrapbook of friendship, made especially for Prerna." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#483122">
+  <meta name="description" content="A handmade vintage memory book for Prerna.">
+  <title>Dear Prerna | A Book of Little Things</title>
 
-  <title>Dear Prerna | A Little Memory Lane</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Indie+Flower&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Indie+Flower&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css" />
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 
 <body>
-  <div class="paper-grain" aria-hidden="true"></div>
+  <div class="film-grain" aria-hidden="true"></div>
 
-  <div class="loading-screen" id="loader">
-    <div class="loading-heart">♡</div>
-    <p>Putting the memories together...</p>
-  </div>
+  <!-- WOODEN DESK BACKGROUND -->
+  <div class="desk">
 
-  <header class="site-header">
-    <a href="#home" class="brand">dear prerna<span>✳</span></a>
-    <a href="#letter" class="header-link">a little note ↗</a>
-  </header>
+    <div class="desk-decoration flower-top" aria-hidden="true">✿</div>
+    <div class="desk-decoration flower-bottom" aria-hidden="true">❀</div>
+    <div class="desk-decoration star-left" aria-hidden="true">✧</div>
+    <div class="desk-decoration star-right" aria-hidden="true">✦</div>
 
-  <main>
+    <header class="topbar">
+      <div class="brand">the little things ♡</div>
+      <div class="edition">A PRIVATE COLLECTION · 2026</div>
+    </header>
 
-    <!-- CHAPTER 1: HERO -->
-    <section class="hero" id="home">
-      <div class="hero-sticker sticker-one">✿</div>
-      <div class="hero-sticker sticker-two">✦</div>
+    <!-- WELCOME -->
+    <section class="welcome" id="welcome">
+      <p class="overline">A HANDMADE MEMORY ALBUM</p>
 
-      <div class="hero-inner">
-        <div class="eyebrow">A SCRAPBOOK MADE JUST FOR YOU · VOL. 01</div>
+      <h1>
+        Dear <em>Prerna,</em>
+      </h1>
 
-        <h1 class="hero-title">
-          Some people<br />
-          feel like <em>sunshine.</em>
-        </h1>
+      <p class="welcome-text">
+        Some people deserve more than just a photograph.
+        They deserve a whole book of beautiful reminders.
+      </p>
 
-        <p class="hero-subtitle">
-          And this little corner of the internet is for one of them.
-        </p>
+      <p class="handwritten welcome-signature">
+        this one's for you ♡
+      </p>
 
-        <div class="hero-polaroid-wrap">
-          <div class="hero-polaroid polaroid">
-            <span class="tape tape-top"></span>
-            <img src="/image1.jpg" alt="A special photograph of Prerna" />
-            <span class="polaroid-caption">the one & only, Prerna ♡</span>
-          </div>
-          <span class="handwritten hero-scribble">that's you! ↗</span>
-        </div>
-
-        <p class="hero-footer-note">
-          For the laughs, the little moments, and everything in between.
-        </p>
-      </div>
-
-      <a class="scroll-cue" href="#intro">
-        <span>scroll to open the scrapbook</span>
-        <span class="scroll-arrow">↓</span>
+      <a href="#bookArea" class="start-button">
+        Open your scrapbook <span>↗</span>
       </a>
+
+      <p class="welcome-hint">
+        Best enjoyed slowly, one memory at a time.
+      </p>
     </section>
 
-    <!-- CHAPTER 2: INTRO -->
-    <section class="intro section-padding" id="intro">
-      <div class="chapter-label">01 / A LITTLE INTRODUCTION</div>
+    <!-- THE INTERACTIVE BOOK -->
+    <section class="book-area" id="bookArea">
 
-      <div class="intro-content">
-        <span class="doodle">✳</span>
-        <h2>
-          Not every memory needs to be a big adventure.
-          <em>Sometimes, the smallest moments stay the longest.</em>
-        </h2>
-        <p>
-          This is a collection of smiles, silly moments, and photographs
-          worth keeping. A tiny reminder that friendship makes ordinary
-          days feel a little more special.
-        </p>
-        <span class="handwritten">and there's more to see ↓</span>
-      </div>
-    </section>
-
-    <!-- CHAPTER 3: MEMORY WALL -->
-    <section class="memory-section section-padding" id="memories">
-      <div class="chapter-label">02 / THE MEMORY WALL</div>
-
-      <div class="section-heading">
-        <p class="mini-label">THE GOOD OLD CAMERA ROLL</p>
-        <h2>Snapshots of <em>everything.</em></h2>
-        <p>Little pieces of time, saved forever.</p>
+      <div class="book-heading">
+        <span>THE PRERNA ARCHIVES</span>
+        <h2>Pages of <em>Little Things.</em></h2>
+        <p>Every page has a story. Every photo has a little secret.</p>
       </div>
 
-      <div class="memory-grid" id="memoryGrid"></div>
-    </section>
+      <div class="book-stage">
 
-    <!-- CHAPTER 4: PHOTO SPOTLIGHT -->
-    <section class="spotlight-section section-padding">
-      <div class="chapter-label">03 / THE LITTLE DETAILS</div>
+        <!-- BOOK COVER / BACKING -->
+        <div class="book-shell" id="bookShell">
 
-      <div class="spotlight-layout">
-        <div class="spotlight-copy">
-          <span class="mini-label">A PAGE FROM THE JOURNAL</span>
-          <h2>The best moments are often <em>unplanned.</em></h2>
-          <p>
-            Random conversations, unexpected laughs, and pictures that
-            make absolutely no sense to anyone else.
-          </p>
-          <p>
-            Somehow, those become the memories we love the most.
-          </p>
-          <span class="handwritten">keep collecting them ♡</span>
-        </div>
+          <div class="book-spine" aria-hidden="true"></div>
 
-        <div class="spotlight-photos">
-          <div class="spotlight-photo spotlight-photo-one">
-            <span class="tape tape-top"></span>
-            <img src="/image5.jpg" alt="A favorite friendship memory" />
+          <!-- LEFT PAGE -->
+          <div class="book-page left-page" id="leftPage">
+            <div class="page-inner" id="leftContent"></div>
+            <span class="page-number" id="leftNumber"></span>
           </div>
-          <div class="spotlight-photo spotlight-photo-two">
-            <img src="/image9.jpg" alt="Another lovely memory" />
-            <span class="photo-stamp">GOOD TIMES<br />ONLY ✳</span>
+
+          <!-- RIGHT PAGE -->
+          <div class="book-page right-page" id="rightPage">
+            <div class="page-inner" id="rightContent"></div>
+            <span class="page-number" id="rightNumber"></span>
           </div>
+
+          <!-- PAGE TURN ANIMATION -->
+          <div class="turn-sheet" id="turnSheet" aria-hidden="true">
+            <div class="turn-front"></div>
+            <div class="turn-back"></div>
+          </div>
+
         </div>
       </div>
-    </section>
 
-    <!-- CHAPTER 5: NOTES -->
-    <section class="notes-section section-padding" id="notes">
-      <div class="chapter-label">04 / LITTLE REMINDERS</div>
-
-      <div class="section-heading">
-        <p class="mini-label">IN CASE YOU EVER FORGET</p>
-        <h2>A few things <em>worth saying.</em></h2>
-      </div>
-
-      <div class="notes-grid">
-        <article class="note-card note-pink">
-          <span class="note-number">NOTE 01</span>
-          <span class="note-symbol">☼</span>
-          <h3>Keep being you.</h3>
-          <p>The world already has enough copies. The original is much more interesting.</p>
-        </article>
-
-        <article class="note-card note-yellow">
-          <span class="note-number">NOTE 02</span>
-          <span class="note-symbol">✿</span>
-          <h3>Laugh a little louder.</h3>
-          <p>Especially at the ridiculous things that nobody else finds funny.</p>
-        </article>
-
-        <article class="note-card note-green">
-          <span class="note-number">NOTE 03</span>
-          <span class="note-symbol">♡</span>
-          <h3>Make more memories.</h3>
-          <p>There are still so many stories waiting to happen.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- CHAPTER 6: HORIZONTAL FILM -->
-    <section class="film-section" id="film">
-      <div class="film-header">
-        <div class="chapter-label">05 / THE PHOTO FILM</div>
-        <h2>One more look <em>back.</em></h2>
-        <p>Keep scrolling to move through the photographs →</p>
-      </div>
-
-      <div class="film-track" id="filmTrack"></div>
-    </section>
-
-    <!-- CHAPTER 7: LETTER -->
-    <section class="letter-section section-padding" id="letter">
-      <div class="chapter-label">06 / ONE LAST THING</div>
-
-      <div class="letter-container">
-        <div class="envelope-decoration">✉</div>
-        <span class="mini-label">A NOTE, JUST FOR YOU</span>
-        <h2>Dear <em>Prerna,</em></h2>
-        <p class="letter-intro">
-          Every good scrapbook deserves a little letter at the end.
-        </p>
-
-        <button class="open-letter-btn" id="openLetter" type="button"
-          aria-expanded="false" aria-controls="secretLetter">
-          Open your letter <span>↗</span>
+      <!-- CONTROLS -->
+      <div class="book-controls">
+        <button id="prevPage" class="page-button" type="button"
+          aria-label="Previous page">
+          ← Previous
         </button>
 
-        <div class="secret-letter" id="secretLetter" hidden>
-          <div class="letter-paper">
-            <span class="letter-date">A LITTLE NOTE TO KEEP</span>
-            <h3>Hey Prerna,</h3>
-
-            <p>
-              Some friendships make life a little brighter without
-              even trying.
-            </p>
-            <p>
-              From random conversations to unexpected laughs,
-              every little memory has its own story.
-            </p>
-            <p>
-              I hope this scrapbook makes you smile and reminds you
-              how wonderful it is to have good people around.
-            </p>
-            <p>
-              Here's to more adventures, more laughter, and many
-              more photographs that deserve a place in this book.
-            </p>
-
-            <div class="letter-signature">
-              With lots of friendship,<br />
-              <strong>Your Friend ♡</strong>
-            </div>
-          </div>
+        <div class="page-indicator">
+          <span id="chapterName">The Beginning</span>
+          <small id="pageCount">01 / 09</small>
         </div>
+
+        <button id="nextPage" class="page-button" type="button"
+          aria-label="Next page">
+          Next →
+        </button>
       </div>
+
+      <p class="interaction-hint">
+        ✧ Click a photograph to discover a message ✧
+      </p>
+
+      <p class="scroll-instruction">
+        Scroll over the book, swipe, or use the arrows to turn pages.
+      </p>
+
     </section>
 
-  </main>
+    <!-- ENDING -->
+    <section class="ending">
+      <span class="overline">A STORY STILL BEING WRITTEN</span>
+      <h2>To be <em>continued...</em></h2>
+      <p>
+        Because the best memories are the ones
+        we haven't made yet.
+      </p>
+      <div class="ending-heart">♡</div>
+    </section>
 
-  <footer class="site-footer">
-    <span>Made with memories & a little bit of magic ✳</span>
-    <span>DEAR PRERNA · 2026</span>
-    <a href="#home">back to the beginning ↑</a>
-  </footer>
+    <footer class="footer">
+      <span>HANDMADE WITH ♡ FOR PRERNA</span>
+      <a href="#welcome">Back to the beginning ↑</a>
+    </footer>
+
+  </div>
+
+  <!-- PHOTO MESSAGE POPUP -->
+  <div class="message-modal" id="messageModal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="messageTitle"
+       aria-hidden="true">
+
+    <div class="message-backdrop" id="messageBackdrop"></div>
+
+    <div class="message-paper">
+      <button class="close-modal" id="closeModal"
+        type="button" aria-label="Close message">×</button>
+
+      <div class="message-decoration">✿</div>
+
+      <p class="message-overline">A LITTLE NOTE FOR YOU</p>
+
+      <h2 id="messageTitle"></h2>
+
+      <p id="messageBody"></p>
+
+      <div class="message-footer">
+        A little reminder, just for Prerna ♡
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
