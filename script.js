@@ -429,10 +429,8 @@ function renderBook() {
   nextButton.disabled = currentIndex >= getLastIndex();
 }
 
-// 7. PAGE TURNING ANIMATION
+ // 7. PAGE TURNING ANIMATION
 
-function turnPage(direction) {
- 
 function turnPage(direction) {
   if (isTurning) return;
 
@@ -448,8 +446,6 @@ function turnPage(direction) {
 
   const duration = 1300;
 
-  // On mobile or for reduced-motion preferences,
-  // preserve the existing simpler page transition.
   if (isMobile() || reducedMotion.matches) {
     currentIndex = nextIndex;
     renderBook();
@@ -460,12 +456,9 @@ function turnPage(direction) {
   const front = turnSheet.querySelector(".turn-front");
   const back = turnSheet.querySelector(".turn-back");
 
-  // Remove old page content.
   front.replaceChildren();
   back.replaceChildren();
 
-  // Capture page contents before turning.
-  // These are visual copies only.
   const outgoingPage =
     direction > 0 ? rightContent : leftContent;
 
@@ -474,20 +467,16 @@ function turnPage(direction) {
       ? pages[nextIndex]
       : pages[nextIndex + 1];
 
-  // Put outgoing photograph and writing
-  // onto the front of the moving paper.
   const outgoingClone = outgoingPage.cloneNode(true);
   outgoingClone.removeAttribute("id");
   front.appendChild(outgoingClone);
 
-  // Render incoming page on the reverse side.
   const backContent = document.createElement("div");
   backContent.className = "page-inner";
 
   renderPage(backContent, incomingPage);
   back.appendChild(backContent);
 
-  // Reset the turning sheet.
   turnSheet.classList.remove("flipping", "reverse");
   void turnSheet.offsetWidth;
 
@@ -495,17 +484,13 @@ function turnPage(direction) {
     turnSheet.classList.add("reverse");
   }
 
-  // Begin page movement.
   turnSheet.classList.add("flipping");
 
-  // Update the underlying book as the page passes
-  // through the middle of the animation.
   window.setTimeout(() => {
     currentIndex = nextIndex;
     renderBook();
   }, duration * 0.52);
 
-  // Finish the turn and restore interaction.
   window.setTimeout(() => {
     turnSheet.classList.remove("flipping", "reverse");
 
@@ -516,23 +501,6 @@ function turnPage(direction) {
     renderBook();
   }, duration + 30);
 }
-
-  // Change the visible pages halfway through.
-  window.setTimeout(() => {
-    currentIndex = nextIndex;
-    renderBook();
-  }, 400);
-
-  window.setTimeout(() => {
-    turnSheet.classList.remove(
-      "flipping",
-      "reverse"
-    );
-
-    isTurning = false;
-  }, 820);
-}
-
 // 8. BUTTON NAVIGATION
 
 prevButton.addEventListener("click", () => {
