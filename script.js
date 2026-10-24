@@ -191,55 +191,28 @@ pages.push({
 
 // 3. ELEMENT REFERENCES
 
-const bookStage = document.querySelector(".book-stage");
-const leftContent = document.getElementById("leftContent");
-const rightContent = document.getElementById("rightContent");
 
-const leftNumber = document.getElementById("leftNumber");
-const rightNumber = document.getElementById("rightNumber");
+/* ============================================
+   3. REALISTIC STPAGEFLIP BOOK ENGINE
+============================================ */
+
+const flipBookElement = document.getElementById("flipBook");
+const bookStage = document.querySelector(".book-stage");
 
 const prevButton = document.getElementById("prevPage");
 const nextButton = document.getElementById("nextPage");
-
 const chapterName = document.getElementById("chapterName");
 const pageCount = document.getElementById("pageCount");
-
-const turnSheet = document.getElementById("turnSheet");
 
 const messageModal = document.getElementById("messageModal");
 const messageTitle = document.getElementById("messageTitle");
 const messageBody = document.getElementById("messageBody");
-
 const closeModalButton = document.getElementById("closeModal");
 const messageBackdrop = document.getElementById("messageBackdrop");
 
-const mobileQuery = window.matchMedia("(max-width: 700px)");
-const reducedMotion = window.matchMedia(
-  "(prefers-reduced-motion: reduce)"
-);
-
-let currentIndex = 0;
-let isTurning = false;
-let lastWheelTurn = 0;
-let touchStartX = 0;
-let touchStartY = 0;
+let pageFlip = null;
 let previousFocus = null;
-
-// 4. HELPER FUNCTIONS
-
-function isMobile() {
-  return mobileQuery.matches;
-}
-
-function getStep() {
-  return isMobile() ? 1 : 2;
-}
-
-function getLastIndex() {
-  return isMobile()
-    ? pages.length - 1
-    : pages.length - 2;
-}
+let lastWheelTurn = 0;
 
 function createElement(tag, className, text) {
   const element = document.createElement(tag);
@@ -255,7 +228,9 @@ function createElement(tag, className, text) {
   return element;
 }
 
-// 5. RENDER A PAGE
+/* ============================================
+   4. BUILD PAGE CONTENT
+============================================ */
 
 function renderPage(container, pageData) {
   container.replaceChildren();
@@ -297,16 +272,11 @@ function renderPage(container, pageData) {
       `${rotations[pageData.memoryIndex % rotations.length]}deg`
     );
 
-    photoButton.style.setProperty(
-      "--float-delay",
-      `${-(pageData.memoryIndex % 4)}s`
-    );
-
     const image = createElement("img");
-
     image.src = memory.image;
     image.alt = memory.caption;
-    image.loading = "lazy";
+    image.loading = "eager";
+    image.draggable = false;
 
     const caption = createElement(
       "span",
@@ -316,7 +286,8 @@ function renderPage(container, pageData) {
 
     photoButton.append(image, caption);
 
-    photoButton.addEventListener("click", () => {
+    photoButton.addEventListener("click", (event) => {
+      event.stopPropagation();
       openMessage(pageData.memoryIndex);
     });
 
@@ -351,228 +322,242 @@ function renderPage(container, pageData) {
     container.append(flower, heart, star);
 
   } else {
-    // Letter and ending pages
     pageData.paragraphs.forEach((paragraph) => {
-      const p = createElement(
-        "p",
-        "page-small-note",
-        paragraph
+      container.append(
+        createElement(
+          "p",
+          "page-small-note",
+          paragraph
+        )
       );
-
-      container.append(p);
     });
 
-    const quote = createElement(
-      "p",
-      "page-quote",
-      pageData.quote
+    container.append(
+      createElement(
+        "p",
+        "page-quote",
+        pageData.quote
+      )
     );
 
-    const stamp = createElement(
-      "span",
-      "page-stamp",
-      pageData.type === "letter"
-        ? "WITH GRATITUDE ♡"
-        : "END OF VOLUME 01"
+    container.append(
+      createElement(
+        "span",
+        "page-stamp",
+        pageData.type === "letter"
+          ? "WITH GRATITUDE ♡"
+          : "END OF VOLUME 01"
+      )
     );
-
-    container.append(quote, stamp);
   }
 }
 
-// 6. DISPLAY CURRENT PAGES
+/* ============================================
+   5. CREATE ALL SCRAPBOOK PAGES
+============================================ */
 
-function renderBook() {
-  const mobile = isMobile();
+function buildScrapbookPages() {
+  const elements = [];
 
-  if (mobile) {
-    // Single page on phones
-    renderPage(leftContent, null);
-    renderPage(rightContent, pages[currentIndex]);
+  pages.forEach((pageData, index) => {
+    const page = createElement(
+      "div",
+      "scrap-page"
+    );
 
-    leftNumber.textContent = "";
-    rightNumber.textContent = String(
-      currentIndex + 1
-    ).padStart(2, "0");
+    const inner = createElement(
+      "div",
+      "page-inner"
+    );
 
-  } else {
-    // Two facing pages on desktop
-    renderPage(leftContent, pages[currentIndex]);
-    renderPage(rightContent, pages[currentIndex + 1]);
+    renderPage(inner, pageData);
 
-    leftNumber.textContent = String(
-      currentIndex + 1
-    ).padStart(2, "0");
+    const number = createElement(
+      "span",
+      "scrap-page-number",
+      String(index + 1).padStart(2, "0")
+    );
 
-    rightNumber.textContent = String(
-      currentIndex + 2
-    ).padStart(2, "0");
-  }
+    page.append(inner, number);
+    flipBookElement.appendChild(page);
 
-  const currentPage = pages[currentIndex];
+    elements.push(page);
+  });
 
-  chapterName.textContent = currentPage.title;
+  return elements;
+}
 
-  const totalSpreads = Math.ceil(
-    pages.length / getStep()
-  );
+/* ============================================
+   6. UPDATE NAVIGATION INDICATOR
+============================================ */
 
-  const currentSpread = Math.floor(
-    currentIndex / getStep()
-  ) + 1;
+function updateBookControls() {
+  if (!pageFlip) return;
+
+  const index = pageFlip.getCurrentPageIndex();
+  const total = pageFlip.getPageCount();
+
+  const currentPage = pages[index];
+
+  chapterName.textContent = currentPage
+    ? currentPage.title
+    : "The Prerna Archives";
+
+  const isPortrait =
+    pageFlip.getOrientation() === "portrait";
+
+  const spreadNumber = isPortrait
+    ? index + 1
+    : Math.floor(index / 2) + 1;
+
+  const totalSpreads = isPortrait
+    ? total
+    : Math.ceil(total / 2);
 
   pageCount.textContent =
-    `${String(currentSpread).padStart(2, "0")} / ` +
+    `${String(spreadNumber).padStart(2, "0")} / ` +
     `${String(totalSpreads).padStart(2, "0")}`;
 
-  prevButton.disabled = currentIndex === 0;
-  nextButton.disabled = currentIndex >= getLastIndex();
+  prevButton.disabled = index <= 0;
+  nextButton.disabled = index >= total - 1;
 }
 
- // 7. PAGE TURNING ANIMATION
+/* ============================================
+   7. INITIALIZE REALISTIC PAGE FLIP
+============================================ */
 
-function turnPage(direction) {
-  if (isTurning) return;
-
-  const nextIndex = currentIndex + direction * getStep();
-
-  if (nextIndex < 0 || nextIndex > getLastIndex()) {
+function initializeScrapbook() {
+  if (!window.St || !window.St.PageFlip) {
+    console.error(
+      "StPageFlip failed to load. Check the CDN script."
+    );
     return;
   }
 
-  isTurning = true;
-  prevButton.disabled = true;
-  nextButton.disabled = true;
+  const pageElements = buildScrapbookPages();
 
-  const duration = 1650;
+  pageFlip = new St.PageFlip(flipBookElement, {
+    width: 460,
+    height: 620,
 
-  if (isMobile() || reducedMotion.matches) {
-    currentIndex = nextIndex;
-    renderBook();
-    isTurning = false;
-    return;
-  }
+    size: "stretch",
 
-  const front = turnSheet.querySelector(".turn-front");
-  const back = turnSheet.querySelector(".turn-back");
+    minWidth: 250,
+    maxWidth: 560,
 
-  front.replaceChildren();
-  back.replaceChildren();
+    minHeight: 340,
+    maxHeight: 750,
 
-  const outgoingPage =
-    direction > 0 ? rightContent : leftContent;
+    flippingTime: 1800,
 
-  const incomingPage =
-    direction > 0
-      ? pages[nextIndex]
-      : pages[nextIndex + 1];
+    drawShadow: true,
+    maxShadowOpacity: 0.85,
 
-  const outgoingClone = outgoingPage.cloneNode(true);
-  outgoingClone.removeAttribute("id");
-  front.appendChild(outgoingClone);
+    showCover: false,
+    usePortrait: true,
 
-  const backContent = document.createElement("div");
-  backContent.className = "page-inner";
+    startPage: 0,
+    startZIndex: 10,
 
-  renderPage(backContent, incomingPage);
-  back.appendChild(backContent);
+    autoSize: true,
 
-  turnSheet.classList.remove("flipping", "reverse");
-  void turnSheet.offsetWidth;
+    mobileScrollSupport: true,
+    swipeDistance: 35,
 
-  if (direction < 0) {
-    turnSheet.classList.add("reverse");
-  }
+    useMouseEvents: true,
+    clickEventForward: true,
 
-  turnSheet.classList.add("flipping");
+    showPageCorners: true,
+    disableFlipByClick: true
+  });
 
-  window.setTimeout(() => {
-    currentIndex = nextIndex;
-    renderBook();
-  }, duration * 0.52);
+  pageFlip.on("flip", () => {
+    updateBookControls();
+  });
 
-  window.setTimeout(() => {
-    turnSheet.classList.remove("flipping", "reverse");
+  pageFlip.on("changeOrientation", () => {
+    updateBookControls();
+  });
 
-    front.replaceChildren();
-    back.replaceChildren();
+  pageFlip.on("init", () => {
+    updateBookControls();
+  });
 
-    isTurning = false;
-    renderBook();
-  }, duration + 30);
+  pageFlip.loadFromHTML(pageElements);
+
+  updateBookControls();
+
+  console.log(
+    "Dear Prerna realistic scrapbook is ready ♡"
+  );
 }
-// 8. BUTTON NAVIGATION
+
+/* ============================================
+   8. PREVIOUS / NEXT BUTTONS
+============================================ */
 
 prevButton.addEventListener("click", () => {
-  turnPage(-1);
+  if (!pageFlip) return;
+  pageFlip.flipPrev("bottom");
 });
 
 nextButton.addEventListener("click", () => {
-  turnPage(1);
+  if (!pageFlip) return;
+  pageFlip.flipNext("bottom");
 });
 
-// 9. SCROLL-CONTROLLED PAGE TURNING
-// Only captures wheel input over the book itself.
-// The rest of the website scrolls normally.
+/* ============================================
+   9. SCROLL TO TURN PAGES
+============================================ */
 
-bookStage.addEventListener("wheel", (event) => {
-  if (messageModal.classList.contains("active")) {
-    return;
-  }
+bookStage.addEventListener(
+  "wheel",
+  (event) => {
+    if (!pageFlip) return;
 
-  const direction = Math.sign(event.deltaY);
+    if (messageModal.classList.contains("active")) {
+      return;
+    }
 
-  if (direction === 0) return;
+    const direction = Math.sign(event.deltaY);
 
-  const canTurn = direction > 0
-    ? currentIndex < getLastIndex()
-    : currentIndex > 0;
+    if (direction === 0) return;
 
-  if (!canTurn) return;
+    const index = pageFlip.getCurrentPageIndex();
+    const total = pageFlip.getPageCount();
 
-  event.preventDefault();
+    const canTurn = direction > 0
+      ? index < total - 1
+      : index > 0;
 
-  const now = Date.now();
+    if (!canTurn) return;
 
-  if (isTurning || now - lastWheelTurn < 1800) {
-    return;
-  }
+    event.preventDefault();
 
-  lastWheelTurn = now;
-  turnPage(direction);
+    const now = Date.now();
 
-}, { passive: false });
+    if (now - lastWheelTurn < 2000) {
+      return;
+    }
 
-// 10. SWIPE GESTURES FOR MOBILE
+    if (pageFlip.getState() !== "read") {
+      return;
+    }
 
-bookStage.addEventListener("touchstart", (event) => {
-  if (event.touches.length !== 1) return;
+    lastWheelTurn = now;
 
-  touchStartX = event.touches[0].clientX;
-  touchStartY = event.touches[0].clientY;
+    if (direction > 0) {
+      pageFlip.flipNext("bottom");
+    } else {
+      pageFlip.flipPrev("bottom");
+    }
+  },
+  { passive: false }
+);
 
-}, { passive: true });
-
-bookStage.addEventListener("touchend", (event) => {
-  if (event.changedTouches.length !== 1) return;
-
-  const deltaX =
-    event.changedTouches[0].clientX - touchStartX;
-
-  const deltaY =
-    event.changedTouches[0].clientY - touchStartY;
-
-  // Only react to deliberate horizontal swipes.
-  if (
-    Math.abs(deltaX) > 55 &&
-    Math.abs(deltaX) > Math.abs(deltaY) * 1.3
-  ) {
-    turnPage(deltaX < 0 ? 1 : -1);
-  }
-
-}, { passive: true });
-
-// 11. OPEN PERSONALIZED MESSAGE
+/* ============================================
+   10. PHOTO MESSAGE POPUP
+============================================ */
 
 function openMessage(memoryIndex) {
   const memory = memories[memoryIndex];
@@ -591,6 +576,69 @@ function openMessage(memoryIndex) {
 
   closeModalButton.focus();
 }
+
+function closeMessage() {
+  messageModal.classList.remove("active");
+  messageModal.setAttribute("aria-hidden", "true");
+
+  document.body.classList.remove("modal-open");
+
+  if (previousFocus && previousFocus.isConnected) {
+    previousFocus.focus();
+  }
+}
+
+closeModalButton.addEventListener(
+  "click",
+  closeMessage
+);
+
+messageBackdrop.addEventListener(
+  "click",
+  closeMessage
+);
+
+/* ============================================
+   11. KEYBOARD CONTROLS
+============================================ */
+
+document.addEventListener("keydown", (event) => {
+  if (messageModal.classList.contains("active")) {
+    if (event.key === "Escape") {
+      closeMessage();
+    }
+    return;
+  }
+
+  if (!pageFlip) return;
+
+  const active = document.activeElement;
+
+  if (
+    active &&
+    ["INPUT", "TEXTAREA", "SELECT"].includes(active.tagName)
+  ) {
+    return;
+  }
+
+  const rect = bookStage.getBoundingClientRect();
+
+  const bookVisible =
+    rect.top < window.innerHeight &&
+    rect.bottom > 0;
+
+  if (!bookVisible) return;
+
+  if (event.key === "ArrowRight") {
+    event.preventDefault();
+    pageFlip.flipNext("bottom");
+  }
+
+  if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    pageFlip.flipPrev("bottom");
+  }
+});
 
 // 12. CLOSE PERSONALIZED MESSAGE
 
